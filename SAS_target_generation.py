@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-
-#################################################################################################
-# Import module
-#################################################################################################
-
 import sys
 import os, shutil
 sys.path.append('..')  # to import from GP.kernels and property_predition.data_utils
@@ -21,13 +15,7 @@ from rdkit.Chem import AllChem
 
 from property_prediction.data_utils import TaskDataLoader, featurise_mols
 
-#import matplotlib.pyplot as plt
-#os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
-#################################################################################################
-# Main function
-#################################################################################################
-    
 def main():
     # Load learning sets
     data_loader = TaskDataLoader('QM_E1_CAM', 'qm8_1000.csv')
@@ -42,7 +30,7 @@ def main():
     co.size_stdev = 5
     co.string_type = 'SMILES'
     
-    mu.mutation_rate = 0.1 #50% probability to mutate
+    mu.mutation_rate = 0.5 #50% probability to mutate
     
     # GA cycle 
     for steps in range(cycle):
@@ -106,7 +94,7 @@ def selection_mol(input_smiles_list, target_pool, target_SAS):
     temp_list.sort()
 
     ideal_list = []
-    ind = 0 # closest to 2,2 value
+    ind = 0 # assigning pointer that is closest to 2,2 value
     min_dif = 100000
 
     for i in range(len(temp_list)):
@@ -128,11 +116,6 @@ def selection_mol(input_smiles_list, target_pool, target_SAS):
 
     output_smiles_list = []
 
-    ###################################
-    ######## Change this part #########
-    ###################################
-   
-    # write a code of selection step
     # In the selection step, molecules with good score(SAS is close to 'target_SAS' variable) have to 
     # have more probability to survive than bad score(SAS is far from 'target_SAS' variable) molecules.
 
@@ -141,14 +124,9 @@ def selection_mol(input_smiles_list, target_pool, target_SAS):
         #output_smiles_list.append(random.choice(input_smiles_list))
         output_smiles_list.append(sas_list[i])
 
-    ###################################
 
     return output_smiles_list
 
-
-#################################################################################################
-# Why python using this? :P
-#################################################################################################
 
 if __name__ == "__main__":
     main()
